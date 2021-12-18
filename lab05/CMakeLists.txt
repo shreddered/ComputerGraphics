@@ -4,7 +4,6 @@ project(lab05)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-string(APPEND CMAKE_CXX_FLAGS " -g")
 
 find_package(OpenCV COMPONENTS core highgui REQUIRED)
 

@@ -1,7 +1,9 @@
 #include "sobel.hpp"
 
+#include <opencv2/core.hpp>
+
+#include <algorithm>
 #include <cmath>
-#include <opencv2/core/matx.hpp>
 
 cv::Mat sobelFilter(cv::Mat src) {
     cv::Mat res;
@@ -11,25 +13,18 @@ cv::Mat sobelFilter(cv::Mat src) {
 
     for(int y = 1; y < src.size().height - 1; ++y){
         for(int x = 1; x < src.size().width - 1; ++x){
-            int a = src.at<cv::Vec3b>(y - 1, x - 1).dot(cv::Vec3i::all(1)) / 3;
-            int b = src.at<cv::Vec3b>(y, x - 1).dot(cv::Vec3i::all(1)) / 3;
-            int c = src.at<cv::Vec3b>(y + 1, x - 1).dot(cv::Vec3i::all(1)) / 3;
-            int d = src.at<cv::Vec3b>(y - 1, x).dot(cv::Vec3i::all(1)) / 3;
-            int e = src.at<cv::Vec3b>(y, x).dot(cv::Vec3i::all(1)) / 3;
-            int f = src.at<cv::Vec3b>(y + 1, x).dot(cv::Vec3i::all(1)) / 3;
-            int g = src.at<cv::Vec3b>(y - 1, x + 1).dot(cv::Vec3i::all(1)) / 3;
-            int h = src.at<cv::Vec3b>(y, x + 1).dot(cv::Vec3i::all(1)) / 3;
-            int i = src.at<cv::Vec3b>(y + 1, x + 1).dot(cv::Vec3i::all(1)) / 3;
+            cv::Rect roi(x - 1, y - 1, 3, 3);
+            cv::Mat tmp = src(roi);
+            cv::Mat matrix(3, 3, CV_32FC1);
+            std::transform(tmp.begin<cv::Vec3b>(), tmp.end<cv::Vec3b>(), matrix.begin<float>(), [](cv::Vec3b vec) { return vec[0] / 3. + vec[1] / 3. + vec[2]/ 3.; });
 
-            int matrix[3][3] = {a,b,c,d,e,f,g,h,i};
-
-            int sumx = 0;
-            int sumy = 0;
+            float sumx = 0;
+            float sumy = 0;
 
             for(int s = 0; s < 3; ++s){
                 for(int t = 0; t < 3; ++t){
-                    sumx = sumx + (matrix[s][t] * kx[s][t]);
-                    sumy = sumy + (matrix[s][t] * ky[s][t]);
+                    sumx = sumx + matrix.at<float>(s, t) * kx[s][t];
+                    sumy = sumy + matrix.at<float>(s, t) * ky[s][t];
                 }
             }
 

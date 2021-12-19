@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <numeric>
-#include <unordered_map>
 
 void line(cv::Mat image, cv::Point from, cv::Point to, uint8_t color) {
     const int dx = std::abs(from.x - to.x), dy = std::abs(from.y - to.y);
@@ -63,11 +62,10 @@ void fillPolygon(cv::Mat image, std::vector<cv::Point> const& vertices, uint8_t 
         for (int y = miny; y < maxy; ++y) {
             auto xarr = yarr[y];
             std::sort(xarr.begin(), xarr.end());
-            for (std::size_t j = 0; j < xarr.size() / 2; ++j) {
-                auto row = image.ptr(y);
-                for (float x = xarr[j * 2]; x < xarr[j * 2 + 1]; x += 1.0f) {
+            for (std::size_t j = 0; j < xarr.size(); j += 2) {
+                uint8_t* row = image.ptr(y);
+                for (float x = xarr[j]; x < xarr[j + 1]; x += 1.0f)
                     row[static_cast<int>(std::floor(x))] = color;
-                }
             }
         }
     }

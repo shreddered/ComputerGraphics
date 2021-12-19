@@ -1,5 +1,5 @@
-#ifndef INCLUDE_CYRUS_BECK_HPP_
-#define INCLUDE_CYRUS_BECK_HPP_
+#ifndef INCLUDE_BEZIER_HPP_
+#define INCLUDE_BEZIER_HPP_
 
 #include <opencv2/core.hpp>
 
@@ -25,4 +25,4 @@ void line(cv::Mat image, cv::Point from, cv::Point to, uint8_t color);
  */
 void bezier(cv::Mat image, cv::Point p0, cv::Point p1, cv::Point p2, uint8_t color);
 
-#endif // INCLUDE_CYRUS_BECK_HPP_
+#endif // INCLUDE_BEZIER_HPP_

@@ -8,4 +8,4 @@
 
 Ниже представлен пример работы программы.
 
-![3d-object](images/diamond.gif)
+![3d-object](images/diamond.png)

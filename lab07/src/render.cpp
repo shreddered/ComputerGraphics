@@ -117,7 +117,7 @@ void renderDiamond(cv::Mat image) {
         { 5, 1, 4 }
     };
     float I_fon = 20, I_p = 235, K_p = 0.4;
-    cv::Vec3f lamp(500, 20, 5);
+    cv::Vec3f lamp(50, 20, 5);
     for (const auto& elem : diamondFacets) {
         auto p0 = diamondVertices[elem[0]], p1 = diamondVertices[elem[1]],
              p2 = diamondVertices[elem[2]];
@@ -136,9 +136,9 @@ void renderDiamond(cv::Mat image) {
                       p1_ = cv::Point(p1[0], p1[1]),
                       p2_ = cv::Point(p2[0], p2[1]);
             fillPolygon(image, { p0_, p1_, p2_ }, cv::Vec3b(0, 0, I));
-            line(image, p0_, p1_, cv::Vec3b(0xff, 0xff, 0xaa));
-            line(image, p0_, p2_, cv::Vec3b(0xff, 0xff, 0xaa));
-            line(image, p2_, p1_, cv::Vec3b(0xff, 0xff, 0xaa));
+            line(image, p0_, p1_, cv::Vec3b(0, 0, I));
+            line(image, p0_, p2_, cv::Vec3b(0, 0, I));
+            line(image, p2_, p1_, cv::Vec3b(0, 0, I));
         }
     }
 }

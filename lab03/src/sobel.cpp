@@ -16,7 +16,9 @@ cv::Mat sobelFilter(cv::Mat src) {
             cv::Rect roi(x - 1, y - 1, 3, 3);
             cv::Mat tmp = src(roi);
             cv::Mat matrix(3, 3, CV_32FC1);
-            std::transform(tmp.begin<cv::Vec3b>(), tmp.end<cv::Vec3b>(), matrix.begin<float>(), [](cv::Vec3b vec) { return vec[0] / 3. + vec[1] / 3. + vec[2]/ 3.; });
+            std::transform(tmp.begin<cv::Vec3b>(), tmp.end<cv::Vec3b>(),
+                           matrix.begin<float>(),
+                           [](cv::Vec3b vec) { return vec[0] / 3. + vec[1] / 3. + vec[2]/ 3.; });
 
             float sumx = 0;
             float sumy = 0;

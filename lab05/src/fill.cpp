@@ -40,7 +40,7 @@ void fillPolygon(cv::Mat image, std::vector<cv::Point> const& vertices, uint8_t 
     int miny = std::accumulate(std::next(vertices.begin()), vertices.end(),
             vertices.front(),
             [](cv::Point p1, cv::Point p2) { return p1.y > p2.y ? p2 : p1; }).y;
-    std::vector<std::vector<double>> yarr(maxy);
+    std::vector<std::vector<float>> yarr(maxy);
     for (std::size_t i = 0; i < vertices.size(); ++i) {
         std::size_t next = 0;
         if (i != vertices.size() - 1)
@@ -56,16 +56,17 @@ void fillPolygon(cv::Mat image, std::vector<cv::Point> const& vertices, uint8_t 
             continue;
         }
 
-        double k = double(vertices[up].y - vertices[down].y) / (vertices[up].x - vertices[down].x);
-        for (std::size_t j = vertices[down].y; j < vertices[up].y; ++j) {
+        float k = static_cast<float>(vertices[up].y - vertices[down].y) / static_cast<float>(vertices[up].x - vertices[down].x);
+        for (int j = vertices[down].y; j < vertices[up].y; ++j) {
             yarr[j].push_back((j - vertices[down].y)/k + vertices[down].x);
         }
-        for (std::size_t y = miny; y < maxy; ++y) {
+        for (int y = miny; y < maxy; ++y) {
             auto xarr = yarr[y];
             std::sort(xarr.begin(), xarr.end());
             for (std::size_t j = 0; j < xarr.size() / 2; ++j) {
-                for (auto x = xarr[j << 1]; x < xarr[(j << 1) + 1]; ++x) {
-                    image.at<uint8_t>(y, std::floor(x)) = color;
+                auto row = image.ptr(y);
+                for (float x = xarr[j * 2]; x < xarr[j * 2 + 1]; x += 1.0f) {
+                    row[static_cast<int>(std::floor(x))] = color;
                 }
             }
         }
